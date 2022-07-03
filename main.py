@@ -1,15 +1,13 @@
 from pyqt5.QtWidges import *
-from pyqt5.QtGui import *
 from pyqt5.QtCore import *
 from pyqt5.QtWenEngineWidgets import *
 
-class MyWebBrowser(QMainWindow):
+class MyWebBrowser():
 
-    def ___init__(self,*args, **kwargs):
-        super(MyWebBrowser,self).__init__(*args, **kwargs)
+    def ___init__(self):
+    
 
         self.Window = QWidget()
-
         self.Window.setWindowTitle("NeuralNine Web Browser")
 
         #ui elements
@@ -36,6 +34,9 @@ class MyWebBrowser(QMainWindow):
 
         self.browser = QWebEngineView()
 
+        self.go_btn.clicked.connect(lambda: self.navigate(self.url_bar.toPlainText()))
+        self.back_btn.clicked.connect(self.browser.back)
+        self.forwad_btn.clicked.connect(self.browser.forwad)
        
         self.layout.addLayout(self.horizontal)
         self.layout.addWidget(self.browser)
@@ -44,4 +45,16 @@ class MyWebBrowser(QMainWindow):
 
         self.window.setLayout(self.layout)
         self.window.show()
+
+
+    def navigate(self , url):
+        if not url.startswith("http"):
+            url = "http://" + url
+            self.url_bar.setText(url)
+        self.browser.setUrl(QUrl(url))
+
+
+app =QApplication()
+window = MyWebBrowser()
+app.exec_()
 
